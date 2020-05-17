@@ -8,27 +8,57 @@ module.exports = (sequelize) => {
         id: {
             type: Sequelize.INTEGER,
             primaryKey: true,
-            autoIncrement: true
+            autoIncrement: true,
+            allowNull: false
         },
         firstName: {
-            type: Sequelize.STRING
+            type: Sequelize.STRING,
+            allowNull: false,
+            validate: {
+                notEmpty: {
+                    msg: 'First Name is required'
+                },
+            },
         },
         lastName: {
-            type: Sequelize.STRING
+            type: Sequelize.STRING,
+            allowNull: false,
+            validate: {
+                notEmpty: {
+                    msg: 'Last Name is required'
+                },
+            },
         },
         emailAddress: {
-            type: Sequelize.STRING
+            type: Sequelize.STRING,
+            allowNull: false,
+            validate: {
+                notEmpty: {
+                    msg: 'Email is required'
+                },
+            },
         },
         password: {
-            type: Sequelize.STRING
+            type: Sequelize.STRING,
+            allowNull: false,
+            validate: {
+                notEmpty: {
+                    msg: 'Password is required'
+                },
+            },
         }
     }, { sequelize });
 
     //define model association, a User has many Courses
-    User.hasMany(Course, {
-      //Course.userId = User.id
-      foreignKey: 'userId'
-    });
+    User.associate = (models) => {
+        User.hasMany(models.Course, {
+            as: 'student',
+            foreignKey: {
+                fieldName: 'userId',
+                allowNull: false
+            }
+        });
+    }
 
     return User;
 };

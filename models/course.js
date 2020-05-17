@@ -8,16 +8,26 @@ module.exports = (sequelize) => {
         id: {
             type: Sequelize.INTEGER,
             primaryKey: true,
-            autoIncrement: true
-        },
-        userId: {
-            type: Sequelize.INTEGER
+            autoIncrement: true,
+            allowNull: false
         },
         title: {
-            type: Sequelize.STRING
+            type: Sequelize.STRING,
+            allowNull: false,
+            validate: {
+                notEmpty: {
+                    msg: 'Title is required'
+                },
+            },
         },
         description: {
-            type: Sequelize.TEXT
+            type: Sequelize.TEXT,
+            allowNull: false,
+            validate: {
+                notEmpty: {
+                    msg: 'Description is required'
+                },
+            },
         },
         estimatedTime: {
             type: Sequelize.STRING,
@@ -27,10 +37,18 @@ module.exports = (sequelize) => {
             type: Sequelize.STRING,
             allowNull: true
         }
-    }, { sequelize })
+    }, { sequelize });
 
     //define model association, a Course belongs to single User
-    Course.belongsTo(User);
+    Course.associate = (models) => {
+        Course.belongsTo(models.User, {
+            as: 'student',
+            foreignKey: {
+                fieldName: 'userId',
+                allowNull: false
+            }
+        });
+    }
 
     return Course;
 };
