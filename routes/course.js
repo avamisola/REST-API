@@ -1,9 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const bcryptjs = require('bcryptjs');
-const auth = require('basic-auth');
-const { check, validationResult } = require('express-validator/check');
 const { Course, User } = require('../models');
+const asyncHandler = require('../middleware/asyncHandler');
+const authenticateUser = require('../middleware/authenticateUser');
 
 //GET /api/courses 200 - Returns a list of courses (including the user that owns each course)
 router.get('/', asyncHandler(async(req, res) => {

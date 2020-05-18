@@ -1,19 +1,6 @@
-const express = require('express');
-const router = express.Router();
 const bcrypt = require('bcryptjs');
 const auth = require('basic-auth');
 const { Course, User } = require('../models');
-
-//middleware for try/catch blocks
-function asyncHandler(cb){
-    return async (req, res, next)=>{
-        try {
-            await cb(req,res, next);
-        } catch(err){
-            next(err);
-        }
-    };
-}
 
 //user authentication function
 const authenticateUser = async (req, res, next) => {
@@ -47,4 +34,4 @@ const authenticateUser = async (req, res, next) => {
     }
 }
 
-module.exports = router;
+module.exports = authenticateUser;

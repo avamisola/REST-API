@@ -3,7 +3,7 @@ const Sequelize = require('sequelize');
 
 //create Course model
 module.exports = (sequelize) => {
-    class Course extends sequelize.Model { }
+    class Course extends Sequelize.Model {}
     Course.init({
         id: {
             type: Sequelize.INTEGER,

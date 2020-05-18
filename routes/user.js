@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const bcryptjs = require('bcryptjs');
-const auth = require('basic-auth');
-const { check, validationResult } = require('express-validator/check');
 const { Course, User } = require('../models');
+const asyncHandler = require('../middleware/asyncHandler');
+const authenticateUser = require('../middleware/authenticateUser');
 
 //GET /api/users 200 - Returns the currently authenticated user
 router.get('/',  authenticateUser, asyncHandler(async (req, res) => {
