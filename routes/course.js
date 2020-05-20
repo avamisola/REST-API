@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const { Course, User } = require('../models');
-const asyncHandler = require('../middleware/asyncHandler');
-const authenticateUser = require('../middleware/authenticateUser');
+const asyncHandler = require('../middleware/asynchandler');
+const authenticateUser = require('../middleware/authenticateuser');
 
 //GET /api/courses 200 - Returns a list of courses (including the user that owns each course)
 router.get('/', asyncHandler(async(req, res) => {
@@ -32,7 +32,7 @@ router.post("/", authenticateUser, asyncHandler(async (req, res) => {
             const errors = error.errors.map(err => err.message);
             const course = Course.build(req.body);
             course.id = req.params.id;
-            res.status(400).json({ errors });
+            res.status(400).json({ course, errors });
         } else {
             throw error;
         }
@@ -40,7 +40,7 @@ router.post("/", authenticateUser, asyncHandler(async (req, res) => {
 }));
 
 //PUT /api/courses/:id 204 - Updates a course and returns no content
-router.put('/:id', authenticateUser, async (req, res) => {
+router.put('/:id', authenticateUser, asyncHandler(async (req, res) => {
     try {
         const course = await Course.findByPk(req.params.id);
         await course.update(req.body);
@@ -50,18 +50,18 @@ router.put('/:id', authenticateUser, async (req, res) => {
             const errors = error.errors.map(err => err.message);
             const course = Course.build(req.body);
             course.id = req.params.id;
-            res.status(400).json({ errors });
+            res.status(400).json({ course, errors });
         } else {
             throw error;
         }
     }
-});
+}));
 
 //DELETE /api/courses/:id 204 - Deletes a course and returns no content
-router.delete('/:id', authenticateUser, async (req, res) => {
+router.delete('/:id', authenticateUser, asyncHandler(async (req, res) => {
     const course = await Course.findByPk(req.params.id);
     await course.destroy();
     res.status(204).end();
-});
+}));
 
 module.exports = router;
