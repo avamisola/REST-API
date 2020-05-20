@@ -17,6 +17,11 @@ const sequelize = new Sequelize({
   storage: './fsjstd-restapi.db'
 });
 
+//set up bodyParser to use req.body
+const bodyParser = require('body-parser')
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
 //check sql db connection
 sequelize
   .authenticate()

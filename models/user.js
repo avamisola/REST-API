@@ -46,6 +46,11 @@ module.exports = (sequelize) => {
                     msg: 'Email is required'
                 },
             },
+            unique: {
+                args: true,
+                msg: 'Email address already in use!'
+            },
+            isEmail: true,
         },
         password: {
             type: Sequelize.STRING,

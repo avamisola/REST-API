@@ -9,7 +9,6 @@ const authenticateUser = require('../middleware/authenticateuser');
 router.get('/',  authenticateUser, asyncHandler(async (req, res) => {
     const user = req.currentUser;
     const firstName = user.firstName
-    console.log(firstName)
     res.status(200).json({
         name: `${user.firstName} ${user.lastName}`,
         email: `${user.emailAddress}`
@@ -20,7 +19,10 @@ router.get('/',  authenticateUser, asyncHandler(async (req, res) => {
 router.post('/', asyncHandler(async (req, res) => {
     try {
         const user = await req.body;
-        user.password = bcryptjs.hashSync(user.password);
+        passwordExists = user.password
+        if (passwordExists) {
+            user.password = bcryptjs.hashSync(user.password);
+        }
         await User.create(user);
         res.location(`/`).status(201).end();
     } catch (error) {

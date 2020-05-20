@@ -42,6 +42,14 @@ router.post("/", authenticateUser, asyncHandler(async (req, res) => {
 //PUT /api/courses/:id 204 - Updates a course and returns no content
 router.put('/:id', authenticateUser, asyncHandler(async (req, res) => {
     try {
+        if (Object.keys(req.body).length === 0) {
+            req.body = {
+                "id": "",
+                "title": "",
+                "description": "",
+                "userId": ""
+            };
+        }
         const course = await Course.findByPk(req.params.id);
         await course.update(req.body);
         res.status(204).end();
@@ -60,8 +68,12 @@ router.put('/:id', authenticateUser, asyncHandler(async (req, res) => {
 //DELETE /api/courses/:id 204 - Deletes a course and returns no content
 router.delete('/:id', authenticateUser, asyncHandler(async (req, res) => {
     const course = await Course.findByPk(req.params.id);
-    await course.destroy();
-    res.status(204).end();
+    if (course) {
+        await course.destroy();
+        res.status(204).end();
+    } else {
+        res.status(404).json({ message: 'Course not found' });
+    }
 }));
 
 module.exports = router;
