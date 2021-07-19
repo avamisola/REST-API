@@ -1,5 +1,4 @@
-# treehouse_techdegree_project_9
- REST API
+# REST API
 
 This project mainly uses Sequelize and Express to read and display database data through a REST API. User can use Postman to create, read, update, and delete (CRUD) the data in the database.
 
